@@ -1,7 +1,7 @@
 Package: ARR
 Type: Package
 Title: Analysis of Recurrence Relations
-Version: 0.1.0
+Version: 1.0
 Date: 2018-12-12
 Authors@R: c(person("Shota", "Nakamura", role = c("aut", "cre"), email = "snak1219@gmail.com"),
     person("Chris", "Russo", role = "aut"))
