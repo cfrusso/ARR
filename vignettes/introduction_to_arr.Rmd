@@ -224,7 +224,7 @@ func1: First function to be analyzed.
 
 func2: Second function to be analyzed.
 
-```{r, fig.width = 6}
+```{r fig.width=6, include=FALSE}
 analyzeTime <- function(title, fill = c("cornflowerblue","#009E73"),func1, func2){
   timer1 <- function(fib1){
   system.time({
@@ -244,7 +244,9 @@ analyzeTime <- function(title, fill = c("cornflowerblue","#009E73"),func1, func2
   ggplot(data=timeAnalysis, aes(x=Function, y=Time)) +
     geom_bar(stat="identity", fill = fill) + ggtitle(title)
 }
+```
 
+```{r}
 # example
 analyzeTime(title="Fibonacci vs. Memoized Fibonacci", func1 = fib(30), func2 = fib_memoized(30,createList(30)))
 ```
@@ -257,7 +259,7 @@ recfunc: the recursive function to be called without the parenthesis or the argu
 
 ...: the parameters of the function to be called.
 
-```{r}
+```{r include=FALSE}
 recursiveCalls <- function(recFunc,...){
   # create character vector
   func_vec <- deparse(recFunc)
@@ -307,7 +309,7 @@ recursiveCalls(fib_memoized,5,newlist1)
 
 filename: the file you saved in capture.output
 
-```{r}
+```{r include=FALSE}
 saveCalls <- function(filename){
   output <- read.csv(filename, header = F, stringsAsFactors = F)
   recurse <- output[-(length(output$V1)),]
@@ -315,6 +317,7 @@ saveCalls <- function(filename){
   return(recurse)
 }
 ```
+
 ```{r}
 # example:
 capture.output(recursiveCalls(fib,10), file = "output.txt")
@@ -329,7 +332,7 @@ fibResult
 
 result: resulting character vector from saveCalls
 
-```{r}
+```{r include=FALSE}
 recDist <- function(result){
   count <- as.character(table(result))
   count <- data.frame(unclass(table(result)))
@@ -340,7 +343,9 @@ recDist <- function(result){
   count <- count[order(count$freq),]
   return(count)
 }
+```
 
+```{r}
 # example:
 capture.output(recursiveCalls(fib,10), file = "output.txt")
 fibResult <- saveCalls("output.txt")
@@ -363,7 +368,7 @@ title: title of graph (defaults to "Title")
 
 color: color of points (defaults to "darkblue")
 
-```{r}
+```{r include=FALSE}
 plotDist <- function(data,xlabel="x label",ylabel="y label", title="Title",color="darkblue"){
   require(ggplot2)
   ggplot(data = data,
@@ -374,7 +379,9 @@ plotDist <- function(data,xlabel="x label",ylabel="y label", title="Title",color
     ggtitle(title) +
     geom_point(color=color)
 }
+```
 
+```{r}
 # example
 capture.output(recursiveCalls(fib,10), file = "output.txt")
 fibResult <- saveCalls("output.txt")
@@ -394,13 +401,15 @@ color: color of area of density plot (defaults to "cornflowerblue")
 
 border: color of outline of density plot (defaults to "red")
 
-```{r}
+```{r include=FALSE}
 plotDensity <- function(data,title="Title",color="cornflowerblue",border="red"){
   d <- density(data[,2])
   plot(d, main=title)
   polygon(d, col=color, border=border)
 }
+```
 
+```{r}
 # example
 capture.output(recursiveCalls(fib,10), file = "output.txt")
 fibResult <- saveCalls("output.txt")

@@ -72,7 +72,7 @@
       <h1>Analysis of Recurrence Relations (ARR)</h1>
                         <h4 class="author">Shota Nakamura and Chris Russo</h4>
             
-            <h4 class="date">2018-12-13</h4>
+            <h4 class="date">2018-12-18</h4>
       
       
       <div class="hidden name"><code>introduction_to_arr.Rmd</code></div>
@@ -259,33 +259,13 @@
 <p>fill: A vector of length two of colors for the bargraphs.</p>
 <p>func1: First function to be analyzed.</p>
 <p>func2: Second function to be analyzed.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">analyzeTime &lt;-<span class="st"> </span><span class="cf">function</span>(title, <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"cornflowerblue"</span>,<span class="st">"#009E73"</span>),func1, func2){
-  timer1 &lt;-<span class="st"> </span><span class="cf">function</span>(fib1){
-  <span class="kw">system.time</span>({
-      fib1
-    })
-  }
-  timedOne &lt;-<span class="st"> </span><span class="kw">timer1</span>(func1)[[<span class="dv">1</span>]]
-  timedTwo &lt;-<span class="st"> </span><span class="kw">timer1</span>(func2)[[<span class="dv">1</span>]]
-  timeType &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"functionOne"</span>,<span class="st">"functionTwo"</span>)
-  analysisOne &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(timeType)
-  analysisTwo &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">c</span>(timedOne,timedTwo))
-  timeAnalysis &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">cbind</span>(analysisOne,analysisTwo))
-  <span class="kw">colnames</span>(timeAnalysis) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"Function"</span>,<span class="st">"Time"</span>)
-  <span class="kw">print</span>(timeAnalysis)
-  <span class="kw">require</span>(ggplot2)
-  title =<span class="st"> </span><span class="kw">paste</span>(<span class="st">"User Time analysis of"</span>,title)
-  <span class="kw">ggplot</span>(<span class="dt">data=</span>timeAnalysis, <span class="kw">aes</span>(<span class="dt">x=</span>Function, <span class="dt">y=</span>Time)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_bar</span>(<span class="dt">stat=</span><span class="st">"identity"</span>, <span class="dt">fill =</span> fill) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(title)
-}
-
-<span class="co"># example</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># example</span>
 <span class="kw"><a href="../reference/analyzeTime.html">analyzeTime</a></span>(<span class="dt">title=</span><span class="st">"Fibonacci vs. Memoized Fibonacci"</span>, <span class="dt">func1 =</span> <span class="kw"><a href="../reference/fib.html">fib</a></span>(<span class="dv">30</span>), <span class="dt">func2 =</span> <span class="kw"><a href="../reference/fib_memoized.html">fib_memoized</a></span>(<span class="dv">30</span>,<span class="kw"><a href="../reference/createList.html">createList</a></span>(<span class="dv">30</span>)))
 <span class="co">#&gt;      Function Time</span>
-<span class="co">#&gt; 1 functionOne 1.44</span>
-<span class="co">#&gt; 2 functionTwo 0.03</span>
+<span class="co">#&gt; 1 functionOne 1.31</span>
+<span class="co">#&gt; 2 functionTwo 0.04</span>
 <span class="co">#&gt; Loading required package: ggplot2</span></code></pre></div>
-<p><img src="introduction_to_arr_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
+<p><img src="introduction_to_arr_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 </div>
 <div id="check-all-recursive-calls" class="section level1">
 <h1 class="hasAnchor">
@@ -293,30 +273,6 @@
 <p><em>recursiveCalls</em> takes a recursive function, with its parameters, and returns the result and prints out every recursive call. Takes the following parameters:</p>
 <p>recfunc: the recursive function to be called without the parenthesis or the arguments. Must have at least one recursive function call.</p>
 <p>…: the parameters of the function to be called.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recursiveCalls &lt;-<span class="st"> </span><span class="cf">function</span>(recFunc,...){
-  <span class="co"># create character vector</span>
-  func_vec &lt;-<span class="st"> </span><span class="kw">deparse</span>(recFunc)
-  <span class="co"># replace function name</span>
-  <span class="kw">library</span>(stringr)
-  funcName &lt;-<span class="st"> </span><span class="kw">deparse</span>(<span class="kw">substitute</span>(recFunc))
-  func_vec &lt;-<span class="st"> </span><span class="kw">str_replace_all</span>(func_vec, funcName, <span class="st">"test"</span>)
-  
-  func_vec_new &lt;-<span class="st"> </span><span class="kw">character</span>(<span class="kw">length</span>(func_vec)<span class="op">+</span><span class="dv">1</span>)
-  func_vec_new[<span class="dv">1</span>] &lt;-<span class="st"> </span>func_vec[<span class="dv">1</span>]
-  func_vec_new[<span class="dv">2</span>] &lt;-<span class="st"> </span>func_vec[<span class="dv">2</span>]
-  <span class="co"># insert</span>
-  call &lt;-<span class="st"> </span>func_vec[<span class="dv">1</span>]
-  call2 &lt;-<span class="st"> </span><span class="kw">substr</span>(call,<span class="dv">11</span>,<span class="kw">nchar</span>(call)<span class="op">-</span><span class="dv">2</span>)
-  
-  funcPar &lt;-<span class="st"> </span><span class="kw">paste</span>(funcName, <span class="st">'('</span>,<span class="dt">sep=</span><span class="st">""</span>)
-  func_vec_new[<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">"print(paste(funcPar, "</span>, <span class="st">"paste("</span>, call2, <span class="st">",sep=','"</span>, <span class="st">")"</span>, <span class="st">", ')', "</span>, <span class="st">"sep = ''))"</span>, <span class="dt">sep =</span> <span class="st">""</span>)
-  
-  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">3</span><span class="op">:</span><span class="kw">length</span>(func_vec)){
-    func_vec_new[i<span class="op">+</span><span class="dv">1</span>] &lt;-<span class="st"> </span>func_vec[i]
-  }
-  test &lt;-<span class="st"> </span><span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text =</span> func_vec_new))
-  <span class="kw">test</span>(...)
-}</code></pre></div>
 <p>Examples:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Multiplication</span>
 <span class="kw"><a href="../reference/mult.html">mult</a></span>(<span class="dv">5</span>,<span class="dv">3</span>)
@@ -430,12 +386,6 @@ newlist1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/cr
 <a href="#save-all-recursive-calls" class="anchor"></a>Save all Recursive Calls</h1>
 <p><em>saveCalls</em> takes all recursive subproblems found in recursive calls and returns character vector containing all recursive subproblems. Takes the following parameters:</p>
 <p>filename: the file you saved in capture.output</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">saveCalls &lt;-<span class="st"> </span><span class="cf">function</span>(filename){
-  output &lt;-<span class="st"> </span><span class="kw">read.csv</span>(filename, <span class="dt">header =</span> F, <span class="dt">stringsAsFactors =</span> F)
-  recurse &lt;-<span class="st"> </span>output[<span class="op">-</span>(<span class="kw">length</span>(output<span class="op">$</span>V1)),]
-  recurse &lt;-<span class="st"> </span><span class="kw">substr</span>(recurse, <span class="dv">5</span>, <span class="kw">length</span>(recurse))
-  <span class="kw">return</span>(recurse)
-}</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># example:</span>
 <span class="kw">capture.output</span>(<span class="kw"><a href="../reference/recursiveCalls.html">recursiveCalls</a></span>(fib,<span class="dv">10</span>), <span class="dt">file =</span> <span class="st">"output.txt"</span>)
 
@@ -473,18 +423,7 @@ fibResult
 <a href="#find-distribution-of-subproblems-" class="anchor"></a>Find Distribution of subproblems.</h1>
 <p><em>recDist</em> takes the output of saveCalls and creates a dataframe aggregating each recursive call into a frequency table. This allows the user to visualize how many times each recursive function was called. Returns a dataframe containing the frequencies and the subproblems. Takes the following parameters:</p>
 <p>result: resulting character vector from saveCalls</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recDist &lt;-<span class="st"> </span><span class="cf">function</span>(result){
-  count &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">table</span>(result))
-  count &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">unclass</span>(<span class="kw">table</span>(result)))
-  <span class="kw">colnames</span>(count) &lt;-<span class="st"> "freq"</span>
-  count<span class="op">$</span>subProblems &lt;-<span class="st"> </span><span class="kw">rownames</span>(count)
-  count &lt;-<span class="st"> </span>count[,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>)]
-  <span class="kw">rownames</span>(count) &lt;-<span class="st"> </span><span class="ot">NULL</span>
-  count &lt;-<span class="st"> </span>count[<span class="kw">order</span>(count<span class="op">$</span>freq),]
-  <span class="kw">return</span>(count)
-}
-
-<span class="co"># example:</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># example:</span>
 <span class="kw">capture.output</span>(<span class="kw"><a href="../reference/recursiveCalls.html">recursiveCalls</a></span>(fib,<span class="dv">10</span>), <span class="dt">file =</span> <span class="st">"output.txt"</span>)
 fibResult &lt;-<span class="st"> </span><span class="kw"><a href="../reference/saveCalls.html">saveCalls</a></span>(<span class="st">"output.txt"</span>)
 res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/recDist.html">recDist</a></span>(fibResult)
@@ -511,23 +450,12 @@ res
 <p>ylabel: y label title of graph (defaults to “y label”)</p>
 <p>title: title of graph (defaults to “Title”)</p>
 <p>color: color of points (defaults to “darkblue”)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plotDist &lt;-<span class="st"> </span><span class="cf">function</span>(data,<span class="dt">xlabel=</span><span class="st">"x label"</span>,<span class="dt">ylabel=</span><span class="st">"y label"</span>, <span class="dt">title=</span><span class="st">"Title"</span>,<span class="dt">color=</span><span class="st">"darkblue"</span>){
-  <span class="kw">require</span>(ggplot2)
-  <span class="kw">ggplot</span>(<span class="dt">data =</span> data,
-         <span class="dt">mapping =</span> <span class="kw">aes</span>(<span class="dt">x =</span> data[,<span class="dv">1</span>], <span class="dt">y =</span> data[,<span class="dv">2</span>])) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">xlab</span>(xlabel) <span class="op">+</span>
-<span class="st">    </span><span class="kw">ylab</span>(ylabel) <span class="op">+</span>
-<span class="st">    </span><span class="kw">ggtitle</span>(title) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">color=</span>color)
-}
-
-<span class="co"># example</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># example</span>
 <span class="kw">capture.output</span>(<span class="kw"><a href="../reference/recursiveCalls.html">recursiveCalls</a></span>(fib,<span class="dv">10</span>), <span class="dt">file =</span> <span class="st">"output.txt"</span>)
 fibResult &lt;-<span class="st"> </span><span class="kw"><a href="../reference/saveCalls.html">saveCalls</a></span>(<span class="st">"output.txt"</span>)
 res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/recDist.html">recDist</a></span>(fibResult)
 <span class="kw"><a href="../reference/plotDist.html">plotDist</a></span>(res, <span class="dt">title=</span><span class="st">"Analysis of Fibonacci"</span>,<span class="dt">xlabel=</span><span class="st">"subproblems"</span>,<span class="dt">ylabel=</span><span class="st">"frequency"</span>)</code></pre></div>
-<p><img src="introduction_to_arr_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
+<p><img src="introduction_to_arr_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
 </div>
 <div id="plot-density" class="section level1">
 <h1 class="hasAnchor">
@@ -537,17 +465,11 @@ res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/recDist
 <p>title: title of graph (defaults to “Title”)</p>
 <p>color: color of area of density plot (defaults to “cornflowerblue”)</p>
 <p>border: color of outline of density plot (defaults to “red”)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plotDensity &lt;-<span class="st"> </span><span class="cf">function</span>(data,<span class="dt">title=</span><span class="st">"Title"</span>,<span class="dt">color=</span><span class="st">"cornflowerblue"</span>,<span class="dt">border=</span><span class="st">"red"</span>){
-  d &lt;-<span class="st"> </span><span class="kw">density</span>(data[,<span class="dv">2</span>])
-  <span class="kw">plot</span>(d, <span class="dt">main=</span>title)
-  <span class="kw">polygon</span>(d, <span class="dt">col=</span>color, <span class="dt">border=</span>border)
-}
-
-<span class="co"># example</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># example</span>
 <span class="kw">capture.output</span>(<span class="kw"><a href="../reference/recursiveCalls.html">recursiveCalls</a></span>(fib,<span class="dv">10</span>), <span class="dt">file =</span> <span class="st">"output.txt"</span>)
 fibResult &lt;-<span class="st"> </span><span class="kw"><a href="../reference/saveCalls.html">saveCalls</a></span>(<span class="st">"output.txt"</span>)
 <span class="kw"><a href="../reference/plotDensity.html">plotDensity</a></span>(<span class="kw"><a href="../reference/recDist.html">recDist</a></span>(fibResult),<span class="dt">title=</span><span class="st">"Fibonacci Density Plot"</span>, <span class="dt">color=</span><span class="st">"cornflowerblue"</span>,<span class="dt">border=</span><span class="st">"black"</span>)</code></pre></div>
-<p><img src="introduction_to_arr_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
+<p><img src="introduction_to_arr_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
 </div>
   </div>
 

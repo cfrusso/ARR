@@ -13,8 +13,6 @@
 #'
 #'@return the nth fibonacci number
 #'
-#'@authors Shota Nakamura <snakamura@@wesleyan.edu>, Chris Russo <crusso@@wesleyan.edu>
-#'
 #'@examples
 #'fib_memoized(10,createList(10))[[1]]
 

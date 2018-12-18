@@ -15,8 +15,6 @@
 #'
 #'@return density plot of data
 #'
-#'@authors Shota Nakamura <snakamura@@wesleyan.edu>, Chris Russo <crusso@@wesleyan.edu>
-#'
 #'@examples
 #'capture.output(recursiveCalls(fib,10), file = "output.txt")
 #'fibResult <- saveCalls("output.txt")

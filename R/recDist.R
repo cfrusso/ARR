@@ -13,8 +13,6 @@
 #'
 #'@return dataframe containing recursive subproblems in sorted order by frequency
 #'
-#'@authors Shota Nakamura <snakamura@@wesleyan.edu>, Chris Russo <crusso@@wesleyan.edu>
-#'
 #'@examples
 #'
 #'fibResult <- saveCalls("output.txt")

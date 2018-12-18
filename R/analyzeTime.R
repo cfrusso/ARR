@@ -16,8 +16,6 @@
 #'
 #'@return a bar graph displaying the user time comparison of the two functions
 #'
-#'@authors Shota Nakamura <snakamura@@wesleyan.edu>, Chris Russo <crusso@@wesleyan.edu>
-#'
 #'@examples
 #'
 #'analyzeTime(title = "Fibonacci vs. Memoized Fibonacci", func1 = fib(30), func2 = fib_memoized(30,createList(30)))

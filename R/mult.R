@@ -14,8 +14,6 @@
 #'
 #'@return the result of x multiplied by y
 #'
-#'@authors Shota Nakamura <snakamura@@wesleyan.edu>, Chris Russo <crusso@@wesleyan.edu>
-#'
 #'@examples
 #'
 #'mult(2,3)

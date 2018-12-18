@@ -12,9 +12,7 @@
 #'
 #'@export
 #'
-#'@return Character vector containing every recursive call 
-#'
-#'@authors Shota Nakamura <snakamura@@wesleyan.edu>, Chris Russo <crusso@@wesleyan.edu>
+#'@return Character vector containing every recursive call
 #'
 #'@examples
 #'

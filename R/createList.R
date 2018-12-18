@@ -9,8 +9,6 @@
 #'
 #'@return a n-length list with 1 as the first two elements, and -1 for the rest
 #'
-#'@authors Shota Nakamura <snakamura@@wesleyan.edu>, Chris Russo <crusso@@wesleyan.edu>
-#'
 #'@examples
 #'createList(10)
 
