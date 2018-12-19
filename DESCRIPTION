@@ -10,8 +10,5 @@ License: GPL-3
 Depends: R (>= 2.10)
 BugReports: https://github.com/cfrusso/ARR/issues
 RoxygenNote: 6.1.0
-Suggests: 
-    knitr,
-    rmarkdown,
-    testthat
+Suggests: knitr, rmarkdown, testthat
 VignetteBuilder: knitr
